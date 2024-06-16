@@ -82,6 +82,7 @@ public final class BottomSheetView: UIView {
     private let contentView: UIView
     private let handleBackground: HandleBackground
     private var topConstraint: NSLayoutConstraint!
+    private let handleWidth: Double
     private var targetOffsets = [CGFloat]()
     private var initialOffset: CGFloat?
     private var translationTargets = [TranslationTarget]()
@@ -126,6 +127,7 @@ public final class BottomSheetView: UIView {
         draggableHeight: CGFloat? = nil,
         useSafeAreaInsets: Bool = false,
         stretchOnResize: Bool = false,
+        handleWidth: Double = 25,
         dismissalDelegate: BottomSheetViewDismissalDelegate? = nil,
         animationDelegate: BottomSheetViewAnimationDelegate? = nil
     ) {
@@ -137,6 +139,7 @@ public final class BottomSheetView: UIView {
         self.stretchOnResize = stretchOnResize
         self.dismissalDelegate = dismissalDelegate
         self.animationDelegate = animationDelegate
+        self.handleWidth = handleWidth
         super.init(frame: .zero)
         setup()
         accessibilityViewIsModal = true
@@ -320,7 +323,7 @@ public final class BottomSheetView: UIView {
 
             handleView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
             handleView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            handleView.widthAnchor.constraint(equalToConstant: 25),
+            handleView.widthAnchor.constraint(equalToConstant: handleWidth),
             handleView.heightAnchor.constraint(equalToConstant: 4),
 
             contentView.topAnchor.constraint(equalTo: handleView.bottomAnchor, constant: 8),

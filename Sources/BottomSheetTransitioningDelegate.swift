@@ -11,6 +11,7 @@ public final class BottomSheetTransitioningDelegate: NSObject {
     private let draggableHeight: CGFloat?
     private let useSafeAreaInsets: Bool
     private let stretchOnResize: Bool
+    private let handleWidth: Double
     private var weakPresentationController: WeakRef<BottomSheetPresentationController>?
     private weak var presentationDelegate: BottomSheetPresentationControllerDelegate?
     private weak var animationDelegate: BottomSheetViewAnimationDelegate?
@@ -33,7 +34,8 @@ public final class BottomSheetTransitioningDelegate: NSObject {
         presentationDelegate: BottomSheetPresentationControllerDelegate? = nil,
         animationDelegate: BottomSheetViewAnimationDelegate? = nil,
         useSafeAreaInsets: Bool = false,
-        stretchOnResize: Bool = false
+        stretchOnResize: Bool = false,
+        handleWidth: Double = 25
     ) {
         self.contentHeights = contentHeights
         self.startTargetIndex = startTargetIndex
@@ -43,6 +45,7 @@ public final class BottomSheetTransitioningDelegate: NSObject {
         self.animationDelegate = animationDelegate
         self.useSafeAreaInsets = useSafeAreaInsets
         self.stretchOnResize = stretchOnResize
+        self.handleWidth = handleWidth
     }
 
     // MARK: - Public
@@ -92,7 +95,8 @@ extension BottomSheetTransitioningDelegate: UIViewControllerTransitioningDelegat
             handleBackground: handleBackground,
             draggableHeight: draggableHeight,
             useSafeAreaInsets: useSafeAreaInsets,
-            stretchOnResize: stretchOnResize
+            stretchOnResize: stretchOnResize, 
+            handleWidth: handleWidth
         )
         self.weakPresentationController = WeakRef(value: presentationController)
         return presentationController
