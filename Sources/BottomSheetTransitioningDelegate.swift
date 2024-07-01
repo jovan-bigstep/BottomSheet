@@ -12,6 +12,8 @@ public final class BottomSheetTransitioningDelegate: NSObject {
     private let useSafeAreaInsets: Bool
     private let stretchOnResize: Bool
     private let handleWidth: Double
+    private let shouldShowShadow: Bool
+    private let backgroundView: BottomSheetView.HandleBackground
     private var weakPresentationController: WeakRef<BottomSheetPresentationController>?
     private weak var presentationDelegate: BottomSheetPresentationControllerDelegate?
     private weak var animationDelegate: BottomSheetViewAnimationDelegate?
@@ -35,7 +37,9 @@ public final class BottomSheetTransitioningDelegate: NSObject {
         animationDelegate: BottomSheetViewAnimationDelegate? = nil,
         useSafeAreaInsets: Bool = false,
         stretchOnResize: Bool = false,
-        handleWidth: Double = 25
+        handleWidth: Double = 25,
+        shouldShowShadow: Bool = true,
+        backgroundView: BottomSheetView.HandleBackground = .color(UIColor(white: 0, alpha: 0.4))
     ) {
         self.contentHeights = contentHeights
         self.startTargetIndex = startTargetIndex
@@ -46,6 +50,8 @@ public final class BottomSheetTransitioningDelegate: NSObject {
         self.useSafeAreaInsets = useSafeAreaInsets
         self.stretchOnResize = stretchOnResize
         self.handleWidth = handleWidth
+        self.shouldShowShadow = shouldShowShadow
+        self.backgroundView = backgroundView
     }
 
     // MARK: - Public
@@ -96,7 +102,9 @@ extension BottomSheetTransitioningDelegate: UIViewControllerTransitioningDelegat
             draggableHeight: draggableHeight,
             useSafeAreaInsets: useSafeAreaInsets,
             stretchOnResize: stretchOnResize, 
-            handleWidth: handleWidth
+            handleWidth: handleWidth,
+            shouldShowShadow: shouldShowShadow,
+            backgroundView: backgroundView
         )
         self.weakPresentationController = WeakRef(value: presentationController)
         return presentationController

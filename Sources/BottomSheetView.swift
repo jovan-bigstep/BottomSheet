@@ -81,6 +81,8 @@ public final class BottomSheetView: UIView {
     private let stretchOnResize: Bool
     private let contentView: UIView
     private let handleBackground: HandleBackground
+    private let shouldShowShadow: Bool
+    private let backgroundView: HandleBackground
     private var topConstraint: NSLayoutConstraint!
     private let handleWidth: Double
     private var targetOffsets = [CGFloat]()
@@ -107,9 +109,15 @@ public final class BottomSheetView: UIView {
     }()
 
     private lazy var dimView: UIView = {
-        let view = UIView(frame: .zero)
+        let view: UIView
+        switch backgroundView {
+        case .color(let uIColor):
+            view = UIView(frame: .zero)
+            view.backgroundColor = uIColor
+        case .visualEffect(let uIVisualEffect):
+            view = UIVisualEffectView(effect: uIVisualEffect)
+        }
         view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        view.backgroundColor = UIColor(white: 0, alpha: 0.4)
         view.addGestureRecognizer(tapGesture)
         view.isHidden = true
         view.alpha = 0
@@ -128,6 +136,8 @@ public final class BottomSheetView: UIView {
         useSafeAreaInsets: Bool = false,
         stretchOnResize: Bool = false,
         handleWidth: Double = 25,
+        shouldShowShadow: Bool = true,
+        backgroundView: HandleBackground = .color(UIColor(white: 0, alpha: 0.4)),
         dismissalDelegate: BottomSheetViewDismissalDelegate? = nil,
         animationDelegate: BottomSheetViewAnimationDelegate? = nil
     ) {
@@ -140,6 +150,8 @@ public final class BottomSheetView: UIView {
         self.dismissalDelegate = dismissalDelegate
         self.animationDelegate = animationDelegate
         self.handleWidth = handleWidth
+        self.shouldShowShadow = shouldShowShadow
+        self.backgroundView = backgroundView
         super.init(frame: .zero)
         setup()
         accessibilityViewIsModal = true
@@ -295,10 +307,12 @@ public final class BottomSheetView: UIView {
         backgroundColor = contentView.backgroundColor ?? .bgPrimary
 
         layer.masksToBounds = false
-        layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOpacity = 0.2
-        layer.shadowOffset = .zero
-        layer.shadowRadius = 3
+        if shouldShowShadow {
+            layer.shadowColor = UIColor.black.cgColor
+            layer.shadowOpacity = 0.2
+            layer.shadowOffset = .zero
+            layer.shadowRadius = 3
+        }
         layer.rasterizationScale = UIScreen.main.scale
         layer.cornerRadius = 16
         layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
